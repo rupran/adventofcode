@@ -7,7 +7,7 @@ with open(sys.argv[1], "r") as infile:
         # X, Y -> positive means up/north and right/east
         loc = [0, 0]
         directions = ['north', 'east', 'south', 'west']
-        cur_dir_ind = 0
+        current_direction_idx = 0
 
         # Location tracking for part B
         visited = set()
@@ -20,18 +20,22 @@ with open(sys.argv[1], "r") as infile:
             turn_dir = match.group(1)
             steps = int(match.group(2))
             if turn_dir == 'L':
-                cur_dir_ind = (cur_dir_ind - 1) % len(directions)
+                current_direction_idx = (current_direction_idx - 1) % len(directions)
             else:
-                cur_dir_ind = (cur_dir_ind + 1) % len(directions)
+                current_direction_idx = (current_direction_idx + 1) % len(directions)
 
             for _ in range(0, steps):
-                if directions[cur_dir_ind] == 'north':
+                # north
+                if current_direction_idx == 0:
                     loc = [loc[0] + 1, loc[1]]
-                elif directions[cur_dir_ind] == 'east':
+                # east
+                elif current_direction_idx == 1:
                     loc = [loc[0], loc[1] + 1]
-                elif directions[cur_dir_ind] == 'south':
+                # south
+                elif current_direction_idx == 2:
                     loc = [loc[0] - 1, loc[1]]
-                elif directions[cur_dir_ind] == 'west':
+                # west
+                elif current_direction_idx == 3:
                     loc = [loc[0], loc[1] - 1]
 
                 if not first_twice:
