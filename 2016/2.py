@@ -17,7 +17,7 @@ pos_b = [2, 0]
 def get_key(field, pos):
     return field[pos[0]][pos[1]]
 
-def update_pos(field, pos, direction, part_b = False):
+def update_pos(field, pos, direction, part_b=False):
     if direction == "U":
         delta = [-1, 0]
     elif direction == "D":
@@ -27,11 +27,12 @@ def update_pos(field, pos, direction, part_b = False):
     elif direction == "R":
         delta = [0, 1]
 
-    new_pos = map(sum, zip(pos, delta))
+    new_pos = [pos[x] + delta[x] for x in xrange(len(pos))]
     retval = new_pos
 
     # Don't move out of bounds
-    if new_pos[0] < 0 or new_pos[0] == len(field) or new_pos[1] < 0 or new_pos[1] == len(field):
+    if new_pos[0] < 0 or new_pos[0] == len(field) or \
+            new_pos[1] < 0 or new_pos[1] == len(field):
         retval = pos
 
     # And don't move into uncovered area in field_b
