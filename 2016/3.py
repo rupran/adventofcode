@@ -1,20 +1,19 @@
 import sys
-import re
 
 def is_possible(a, b, c):
     return a + b > c and a + c > b and b + c > a
 
-def first_part(infile):
+def first_part(input_file):
     possible = 0
-    for line in infile.readlines():
+    for line in input_file.readlines():
         a, b, c = (int(x) for x in line.split())
         if is_possible(a, b, c):
             possible += 1
 
     return possible
 
-def second_part(infile):
-    all_lines = infile.readlines()
+def second_part(input_file):
+    all_lines = input_file.readlines()
     possible = 0
     cur_index = 0
     end_index = 3
@@ -39,8 +38,8 @@ def second_part(infile):
 
 
 with open(sys.argv[1], "r") as infile:
-    print(first_part(infile))
+    print first_part(infile)
 
 with open(sys.argv[1], "r") as infile:
-    print(second_part(infile))
+    print second_part(infile)
 
