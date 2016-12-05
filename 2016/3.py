@@ -14,7 +14,8 @@ def part_one(lines):
 
     return possible
 
-def part_two(all_lines):
+def part_two(lines):
+    all_lines = list(lines)
     possible = 0
     cur_index = 0
     end_index = 3
@@ -38,5 +39,5 @@ def part_two(all_lines):
     return possible
 
 
-print("A: " + str(part_one(list(lib.get_input(3)))))
-print("B: " + str(part_two(list(lib.get_input(3)))))
+print("A: " + str(part_one(lib.get_input(3))))
+print("B: " + str(part_two(lib.get_input(3))))

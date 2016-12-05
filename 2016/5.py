@@ -7,7 +7,8 @@ import lib.common as lib
 def calc_hash(in_value):
     return hashlib.md5(in_value.encode()).hexdigest()
 
-def part_one(line):
+def part_one(line_gen):
+    line = next(line_gen)
     index = 0
     password = ""
     while len(password) < 8:
@@ -19,7 +20,8 @@ def part_one(line):
 
     return password
 
-def part_two(line):
+def part_two(line_gen):
+    line = next(line_gen)
     password = [None] * 8
     index = 0
 
@@ -41,6 +43,5 @@ def part_two(line):
 
     return "".join(password)
 
-for input_line in lib.get_input(5):
-    print("A: " + part_one(input_line))
-    print("B: " + part_two(input_line))
+print("A: " + str(part_one(lib.get_input(5))))
+print("B: " + str(part_two(lib.get_input(5))))
