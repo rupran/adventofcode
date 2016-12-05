@@ -23,23 +23,21 @@ def part_one(line_gen):
 def part_two(line_gen):
     line = next(line_gen)
     password = [None] * 8
-    index = 0
+    index = -1
 
     while not all(password):
+        index += 1
         digest = calc_hash(line + str(index))
         if digest.startswith("00000"):
             insert = digest[5]
             val = digest[6]
 
             if insert < '0' or insert >= '8':
-                index += 1
                 continue
 
             insert = int(insert)
             if password[insert] is None:
                 password[insert] = val
-
-        index += 1
 
     return "".join(password)
 
