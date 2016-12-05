@@ -1,4 +1,6 @@
-import sys
+#!/usr/bin/python3
+
+import lib.common as lib
 
 field_a = [[1, 2, 3],
            [4, 5, 6],
@@ -27,7 +29,7 @@ def update_pos(field, pos, direction, part_b=False):
     elif direction == "R":
         delta = [0, 1]
 
-    new_pos = [pos[x] + delta[x] for x in xrange(len(pos))]
+    new_pos = [pos[x] + delta[x] for x in range(len(pos))]
     retval = new_pos
 
     # Don't move out of bounds
@@ -42,17 +44,15 @@ def update_pos(field, pos, direction, part_b=False):
 
     return retval
 
-with open(sys.argv[1], "r") as infile:
-    code_a = ""
-    code_b = ""
-    for line in infile.readlines():
-        line = line.strip()
-        for instr in line:
-            pos_a = update_pos(field_a, pos_a, instr)
-            pos_b = update_pos(field_b, pos_b, instr, part_b=True)
+code_a = ""
+code_b = ""
+for line in lib.get_input(2):
+    for instr in line:
+        pos_a = update_pos(field_a, pos_a, instr)
+        pos_b = update_pos(field_b, pos_b, instr, part_b=True)
 
-        code_a += str(get_key(field_a, pos_a))
-        code_b += str(get_key(field_b, pos_b))
+    code_a += str(get_key(field_a, pos_a))
+    code_b += str(get_key(field_b, pos_b))
 
-    print "A: " + code_a
-    print "B: " + code_b
+print("A: " + code_a)
+print("B: " + code_b)

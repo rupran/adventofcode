@@ -1,19 +1,20 @@
-import sys
+#!/usr/bin/python3
+
+import lib.common as lib
 
 def is_possible(a, b, c):
     return a + b > c and a + c > b and b + c > a
 
-def first_part(input_file):
+def part_one(lines):
     possible = 0
-    for line in input_file.readlines():
+    for line in lines:
         a, b, c = (int(x) for x in line.split())
         if is_possible(a, b, c):
             possible += 1
 
     return possible
 
-def second_part(input_file):
-    all_lines = input_file.readlines()
+def part_two(all_lines):
     possible = 0
     cur_index = 0
     end_index = 3
@@ -37,9 +38,5 @@ def second_part(input_file):
     return possible
 
 
-with open(sys.argv[1], "r") as infile:
-    print first_part(infile)
-
-with open(sys.argv[1], "r") as infile:
-    print second_part(infile)
-
+print("A: " + str(part_one(list(lib.get_input(3)))))
+print("B: " + str(part_two(list(lib.get_input(3)))))

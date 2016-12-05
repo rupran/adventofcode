@@ -1,13 +1,11 @@
-import md5
-import re
-import sys
+#!/usr/bin/python3
 
+import hashlib
+import re
 import lib.common as lib
 
 def calc_hash(in_value):
-    md5hash = md5.new()
-    md5hash.update(in_value)
-    return md5hash.hexdigest()
+    return hashlib.md5(in_value.encode()).hexdigest()
 
 def part_one(line):
     index = 0
@@ -44,5 +42,5 @@ def part_two(line):
     return "".join(password)
 
 for input_line in lib.get_input(5):
-    print part_one(input_line)
-    print part_two(input_line)
+    print("A: " + part_one(input_line))
+    print("B: " + part_two(input_line))
