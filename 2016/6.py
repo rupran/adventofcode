@@ -16,13 +16,9 @@ def gen_occurrences(line_gen):
     return occurrences
 
 def calc_solution(line_gen, fun):
-    occurrences = gen_occurrences(line_gen)
-    msg = ""
+    occs = gen_occurrences(line_gen)
 
-    for idx in occurrences:
-        msg += str(fun(occurrences[idx].items(), key=lambda a: a[1])[0])
-
-    return msg
+    return "".join(fun(occs[x].items(), key=lambda a: a[1])[0] for x in occs)
 
 def part_one(line_gen):
     return calc_solution(line_gen, max)
