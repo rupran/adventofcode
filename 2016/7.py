@@ -29,7 +29,7 @@ def part_two(line_gen):
     for line in line_gen: # multi line input
         outside_matches = []
         offset = 0
-        while offset < len(line) - 1:
+        while offset < len(line):
             # Skip stuff in brackets for now
             if line[offset] == "[":
                 while line[offset] != "]":
@@ -41,14 +41,14 @@ def part_two(line_gen):
                 outside_matches.append(match)
             offset += 1
 
-        # Iterate over matches until we found one 
+        # Iterate over aba patterns for current line
         found_one = False
         for match in outside_matches:
             reverse = match.group(2) + match.group(1) + match.group(2)
             rev_offset = 0
             in_brackets = False
             # ... until we found a corresponding reverse
-            while not found_one and rev_offset < len(line) - 1:
+            while not found_one and rev_offset < len(line):
                 # skip characters outside brackets now
                 if not line[rev_offset] == "[":
                     if not in_brackets:
@@ -58,7 +58,7 @@ def part_two(line_gen):
                     in_brackets = True
 
                 # Match reverse at current offset
-                rev_match = re.match(r"(" + reverse + r")", line[rev_offset:])
+                rev_match = re.match(reverse, line[rev_offset:])
                 if rev_match:
                     total += 1
                     found_one = True
