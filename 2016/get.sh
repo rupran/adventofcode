@@ -22,6 +22,6 @@ else
     chmod u+x $day.py;
     touch inputs/sample_$day;
     if ! [ -f inputs/input_$day ]; then
-        wget --load-cookies=session.cookie -N https://adventofcode.com/$YEAR/day/$day/input > inputs/input_$day;
+        wget --load-cookies=session.cookie https://adventofcode.com/$YEAR/day/$day/input -O inputs/input_$day;
     fi
 fi
