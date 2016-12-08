@@ -5,8 +5,8 @@ import lib.common as lib
 import re
 
 def print_field(field):
-    for x in field:
-        print(x)
+    for row in field:
+        print("".join(row))
 
 def part_one(line_gen, size_x, size_y):
     global field
