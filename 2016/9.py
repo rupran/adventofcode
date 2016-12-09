@@ -1,66 +1,57 @@
 #!/usr/bin/env python3
 
 import lib.common as lib
+import re
 
-def get_index_count_repeatlen(line, index):
-    next_count = 0
-    repeat_len = 0
+def parse_pattern(line, index):
+    """ Parse a repetition specification in @line at index @index.
+    Returns the new index pointing to the next non-pattern character, the number
+    of repeated characters and the number of repetitions."""
+    n_chars = 1
+    n_repetitions = 1
     
-    index += 1
-    char = line[index]
-    while char != "x":
-        next_count *= 10
-        next_count += int(char)
-        index += 1
-        char = line[index]
-    index += 1
-    char = line[index]
-    while char != ")":
-        repeat_len *= 10
-        repeat_len += int(char)
-        index += 1
-        char = line[index]
-    index += 1
+    match = re.match(r"^(\((\d+)x(\d+)\)).*", line[index:])
+    if match:
+        index += len(match.group(1))
+        n_chars = int(match.group(2))
+        n_repetitions = int(match.group(3))
 
-    return index, next_count, repeat_len
+    return index, n_chars, n_repetitions
 
-def eval_pattern_length_one(line, offset, length):
+def get_added_factor(line, offset, n_chars, n_repetitions, task):
+    """ Calculate the number of chars added by a pattern. For task A, this is
+    non-recursive and just returns the product of n_chars and n_repetitions.
+    For task B, we need to recursively evaluate the pattern(s) at @offset."""
+    if task == "A":
+        return n_chars * n_repetitions
+    else:
+        return eval_pattern_length(line, offset, n_chars, task) * n_repetitions
+
+def eval_pattern_length(line, offset, length, task):
     index = offset
-    cur_len = 0
+    total_len = 0
     while index < offset + length:
         char = line[index]
-        if char != "(" and char != ")":
-            cur_len += 1
+        if char != "(":
+            total_len += 1
             index += 1
         else:
-            index, next_count, repeat_len = get_index_count_repeatlen(line, index)
-            cur_len += (repeat_len * next_count)
-            index += next_count
+            # Move index past the current pattern specification
+            index, n_chars, n_repetitions = parse_pattern(line, index)
+            # Add length by this pattern to total length
+            total_len += get_added_factor(line, index, n_chars, n_repetitions, task)
+            # Advance index past the chars covered by pattern
+            index += n_chars
 
-    return cur_len
-
-def eval_pattern_length_two(line, offset, length):
-    index = offset
-    cur_len = 0
-    while index < offset + length:
-        char = line[index]
-        if char != "(" and char != ")":
-            cur_len += 1
-            index += 1
-        else:
-            index, next_count, repeat_len = get_index_count_repeatlen(line, index)
-            cur_len += eval_pattern_length_two(line, index, next_count) * repeat_len
-            index += next_count
-
-    return cur_len
+    return total_len
     
 def part_one(line_gen):
     line = next(line_gen)
-    return eval_pattern_length_one(line, 0, len(line))
+    return eval_pattern_length(line, 0, len(line), "A")
 
 def part_two(line_gen):
-    line = next(line_gen) # one line input
-    return eval_pattern_length_two(line, 0, len(line))
+    line = next(line_gen)
+    return eval_pattern_length(line, 0, len(line), "B")
 
 print("A: " + str(part_one(lib.get_input(9))))
 print("B: " + str(part_two(lib.get_input(9))))
