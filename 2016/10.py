@@ -63,7 +63,7 @@ def part_one(line_gen):
                 worklist.append(high_out_idx)
         else:
             outputs[high_out_idx] = max_val
-            
+
     for bot_no in bots:
         if bots[bot_no]["low_val"] == 17 and bots[bot_no]["high_val"] == 61:
             return bot_no
