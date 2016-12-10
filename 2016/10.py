@@ -7,35 +7,31 @@ def part_one(line_gen):
     global outputs
     bots = {}
     outputs = {}
-    # line = next(line_gen) # one line input
+
     for line in line_gen: # multi line input
         match = re.match(r"bot (\d+) gives low to (bot|output) (\d+) and high to (bot|output) (\d+)", line)
         if match:
             bot_no = int(match.group(1))
             low_out = (match.group(2), int(match.group(3)))
             high_out = (match.group(4), int(match.group(5)))
-            low_val = None
-            high_val = None
-            inputs = []
+
             if not bot_no in bots:
-                bots[bot_no] = {"low_out": low_out, "high_out": high_out, "low_val": low_val, "high_val": high_val, "inputs": inputs}
+                bots[bot_no] = {"low_out": low_out, "high_out": high_out,
+                                "low_val": None, "high_val": None, "inputs": []}
             else:
                 bots[bot_no]["low_out"] = low_out
                 bots[bot_no]["high_out"] = high_out
-                bots[bot_no]["low_val"] = low_val
-                bots[bot_no]["high_val"] = high_val
+                bots[bot_no]["low_val"] = None
+                bots[bot_no]["high_val"] = None
             continue
         match = re.match("value (\d+) goes to bot (\d+)", line)
         if match:
             bot_no = int(match.group(2))
             val = int(match.group(1))
             if not bot_no in bots:
-                bots[bot_no] = {"inputs": [val] }
+                bots[bot_no] = {"inputs": [val]}
             else:
-                if "inputs" in bots[bot_no]:
-                    bots[bot_no]["inputs"].append(val)
-                else:
-                    bots[bot_no]["inputs"] = [val]
+                bots[bot_no]["inputs"].append(val)
 
     worklist = []
     for bot_no in bots:
