@@ -23,17 +23,24 @@ def get_new_state(old_state, to_update, delta):
         new_state[idx] += delta
     return tuple(new_state)
 
+def make_interchangeable_tuple(state):
+    perm_state = [(state[0],)]
+    for i in range(1, len(state), 2):
+        perm_state.append((state[i], state[i+1]))
+    return tuple(sorted(perm_state))
+
 def update_worklist(worklist, old_state, to_update, delta, seen, cur_dist):
     next_state = get_new_state(old_state, to_update, delta)
-    if next_state not in seen and is_good_state(next_state):
-        seen.add(next_state)
+    perm_tup = make_interchangeable_tuple(next_state)
+    if perm_tup not in seen and is_good_state(next_state):
+        seen.add(perm_tup)
         worklist.append((next_state, cur_dist + 1))
 
 def solve(in_tuple):
     target = tuple([4] * len(in_tuple))
 
     seen = set()
-    seen.add(in_tuple)
+    seen.add(make_interchangeable_tuple(in_tuple))
 
     start = (in_tuple, 0)
     worklist = [start]
