@@ -2,10 +2,26 @@
 
 import lib.common as lib
 import re
+import collections
+
+def print_graph(bots, inputs, outputs):
+    with open("10.dot", "w") as dotfile:
+        dotfile.write("digraph ten {\n")
+        for output in outputs:
+            dotfile.write("output%d [shape=box, color=red]\n" % output)
+        for inp in inputs:
+            for val in inputs[inp]:
+                dotfile.write("%d [shape=box, color=blue]\n" % val)
+                dotfile.write("%d -> bot%d\n" % (val, inp))
+        for bot in bots:
+            dotfile.write("bot%d -> %s%d [color=green4]\n" % (bot, bots[bot]["low_out"][0], bots[bot]["low_out"][1]))
+            dotfile.write("bot%d -> %s%d [color=firebrick]\n" % (bot, bots[bot]["high_out"][0], bots[bot]["high_out"][1]))
+        dotfile.write("}\n")
 
 def part_one(line_gen):
     global outputs
     bots = {}
+    inputs = collections.defaultdict(list)
     outputs = {}
 
     for line in line_gen: # multi line input
@@ -32,6 +48,7 @@ def part_one(line_gen):
                 bots[bot_no] = {"inputs": [val]}
             else:
                 bots[bot_no]["inputs"].append(val)
+            inputs[bot_no].append(val)
 
     worklist = []
     for bot_no in bots:
@@ -63,6 +80,8 @@ def part_one(line_gen):
                 worklist.append(high_out_idx)
         else:
             outputs[high_out_idx] = max_val
+
+    print_graph(bots, inputs, outputs)
 
     for bot_no in bots:
         if bots[bot_no]["low_val"] == 17 and bots[bot_no]["high_val"] == 61:
