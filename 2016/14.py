@@ -28,10 +28,11 @@ def find_index_64(salt, stretched=False):
         match = re.search(r"(.)\1{2}", cur_hash)
         if match:
             tripled_char = match.group(1)
+            quint_regex = re.compile(r"%s{5}" % tripled_char)
             for j in range(1, 1001):
                 fwd_val = salt + str(index + j)
                 fwd_hash = get_hash(cache, fwd_val, stretched)
-                match = re.search(r"(%s)\1{4}" % tripled_char, fwd_hash)
+                match = quint_regex.search(fwd_hash)
                 if match:
                     keys.append(cur_val)
 
