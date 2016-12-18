@@ -3,21 +3,20 @@
 import collections
 import lib.common as lib
 
-def gen_next(state):
-    cur_state = ["."] + state + ["."]
-    next_state = [None] * len(cur_state)
+def gen_next(cur_state):
+    next_state = cur_state[:]
     for i in range(1, len(next_state) - 1):
         next_state[i] = "."
         if cur_state[i-1] != cur_state[i+1]:
             next_state[i] = "^"
 
-    return next_state[1:-1]
+    return next_state
 
 def count_safe(line):
-    return collections.Counter(line)['.']
+    return collections.Counter(line)['.'] - 2
 
 def simulate(line_gen, count):
-    state = list(next(line_gen))
+    state = ["."] + list(next(line_gen)) + ["."]
     total = count_safe(state)
     for _ in range(count - 1):
         state = gen_next(state)
