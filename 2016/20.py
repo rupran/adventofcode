@@ -7,8 +7,7 @@ def merge_ranges(line_gen):
                         [l.split("-") for l in line_gen])
 
     merged_ranges = [ranges[0]]
-    cur_ind = 1
-    while cur_ind < len(ranges):
+    for cur_ind in range(1, len(ranges)):
         start_a, end_a = merged_ranges[-1]
         start_b, end_b = ranges[cur_ind]
         # Merge overlapping and adjacent, only keep merged pair
@@ -21,7 +20,6 @@ def merge_ranges(line_gen):
         # No merge possible, add this pair
         else:
             merged_ranges.append(ranges[cur_ind])
-        cur_ind += 1
 
     return merged_ranges
 
@@ -35,10 +33,8 @@ def part_two(line_gen, max_ip):
     merged_ranges.append((max_ip + 1, None))
 
     allowed = 0
-    cur_ind = 0
-    while cur_ind < len(merged_ranges) - 1:
+    for cur_ind in range(len(merged_ranges) - 1):
         allowed += merged_ranges[cur_ind + 1][0] - merged_ranges[cur_ind][1] - 1
-        cur_ind += 1
 
     return allowed
 
