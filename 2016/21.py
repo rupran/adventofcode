@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 import collections
-import re
+import itertools
 import lib.common as lib
+import re
 
 def rotate(in_deque, in_char):
     char_ind = in_deque.index(in_char)
@@ -61,6 +62,13 @@ def part_one(line_gen, in_deque):
             continue
 
     return "".join(in_deque)
+
+# Alternative solution for part two:
+#def part_two(line_gen, to_search):
+#    instrs = list(line_gen)
+#    for string in itertools.permutations("abcdefgh"):
+#        if part_one(instrs, collections.deque(string)) == "".join(to_search):
+#            return "".join(string)
 
 def part_two(line_gen, in_deque):
     # Go through instructions backward
