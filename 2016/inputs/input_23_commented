@@ -1,0 +1,34 @@
+cpy a b     |
+dec b       |                       b = a - 1
+                                    while True:
+cpy a d         |
+cpy 0 a         |
+cpy b c         |
+inc a           |
+dec c           |
+jnz c -2        |
+dec d           |
+jnz d -5        |                       a = a*b
+dec b       |                           b -= 1
+cpy b c     |
+cpy c d     |
+dec d           |
+inc c           |
+jnz d -2        |                       c = 2 * b
+tgl c           |                       # modify instruction at (eip + c)
+cpy -16 c
+jnz 1 c                                 if c == 2: # if c == 2, this jump becomes a cpy -> we leave the loop
+                                            break
+
+# we get here once a = a!, plus the code has been modified
+
+cpy 81 c                            c = 81
+                                    while True:
+jnz 93 d    | mod. to 'cpy 93 d'
+inc a
+inc d       | mod. to 'dec d'
+jnz d -2    |                           a += 93
+inc c       | modified to 'dec c'       c -= 1
+jnz c -5    |                           if c == 0:
+                                            break
+Result: a = a! + 93*81
