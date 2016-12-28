@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import hashlib
-import lib.common as lib
 import re
+import lib.common as lib
 
 def calc_hash(in_value, stretched):
     ret_hash = hashlib.md5(in_value.encode()).hexdigest()

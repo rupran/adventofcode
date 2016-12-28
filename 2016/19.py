@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import collections
-import lib.common as lib
 import math
+import lib.common as lib
 
 def part_one(line_gen):
     n = int(next(line_gen))
@@ -19,7 +19,7 @@ def part_two(line_gen):
     for i in range(math.ceil(n/2) + 1, n + 1):
         second_half.append(i)
 
-    while(n > 1):
+    while n > 1:
         if n % 2 == 0:
             # there is an exact opposite, remove it (first in second half)
             second_half.popleft()

@@ -33,21 +33,21 @@ def read_grid(line_gen):
         grid.append(cur_row)
 
     target_coords = []
-    for y in range(len(grid)):
-        for x in range(len(grid[y])):
+    for y, _ in enumerate(grid):
+        for x, _ in enumerate(grid[y]):
             if grid[y][x].isdigit():
                 target_coords.append((y, x))
 
     return grid, target_coords
 
-def calc_min_distance(line_gen, part_two=False):
+def calc_min_distance(line_gen, second_part=False):
     grid, target_coords = read_grid(line_gen)
 
     distances = collections.defaultdict(dict)
     for cur_start in target_coords:
         do_bfs(grid, cur_start, distances)
 
-    min_dist = 1e10
+    min_dist = int(1e10)
     for order in itertools.permutations(list(distances.keys())):
         if order[0] != "0":
             continue
@@ -56,7 +56,7 @@ def calc_min_distance(line_gen, part_two=False):
         for walk in zip(order, order[1:]):
             cur_dist += distances[walk[0]][walk[1]]
 
-        if part_two:
+        if second_part:
             cur_dist += distances[order[-1]][order[0]]
 
         if cur_dist < min_dist:
@@ -68,7 +68,7 @@ def part_one(line_gen):
     return calc_min_distance(line_gen)
 
 def part_two(line_gen):
-    return calc_min_distance(line_gen, part_two=True)
+    return calc_min_distance(line_gen, second_part=True)
 
 print("A: " + str(part_one(lib.get_input(24))))
 print("B: " + str(part_two(lib.get_input(24))))

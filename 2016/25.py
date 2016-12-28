@@ -40,7 +40,7 @@ def simulate(instrs, registers):
                 out_values.append(out_value)
             if len(out_values) > 20:
                 return True
-        eip += 1 
+        eip += 1
 
 def part_one(line_gen):
     a = 1

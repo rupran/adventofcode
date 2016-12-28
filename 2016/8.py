@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
 import collections
-import lib.common as lib
 import re
+import lib.common as lib
 
-def print_field(field):
+field = [[" "]]
+
+def print_field():
     for row in field:
         print("".join(row))
 
@@ -41,8 +43,7 @@ def part_one(line_gen, size_x, size_y):
     return collections.Counter(entry for row in field for entry in row)["#"]
 
 def part_two():
-    global field
-    print_field(field)
+    print_field()
     return "See image above in a wide enough terminal"
 
 print("A: " + str(part_one(lib.get_input(8), 50, 6)))

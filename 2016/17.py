@@ -32,10 +32,10 @@ def find_paths(inp):
 
 
 def part_one(line_gen):
-    return min(find_paths(next(line_gen)), key=lambda s: len(s))
+    return min(find_paths(next(line_gen)), key=len)
 
 def part_two(line_gen):
-    return len(max(find_paths(next(line_gen)), key=lambda s: len(s)))
+    return len(max(find_paths(next(line_gen)), key=len))
 
 print("A: " + str(part_one(lib.get_input(17))))
 print("B: " + str(part_two(lib.get_input(17))))

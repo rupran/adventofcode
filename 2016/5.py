@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import hashlib
-import re
 import lib.common as lib
 
 def calc_hash(in_value):

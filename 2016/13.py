@@ -8,7 +8,7 @@ def is_open_space(pos, fav):
     form = (x*x + 3*x + 2*x*y + y + y*y) + fav
     return collections.Counter(bin(form))["1"] % 2 == 0
 
-def do_worklist(line_gen, part_one=True):
+def do_worklist(line_gen, first_part=True):
     fav = int(next(line_gen))
     seen = set()
     # Form: ((x, y), dist)
@@ -18,9 +18,9 @@ def do_worklist(line_gen, part_one=True):
     while worklist:
         (cur_x, cur_y), cur_dist = worklist.pop(0)
 
-        if part_one and (cur_x, cur_y) == (31, 39):
+        if first_part and (cur_x, cur_y) == (31, 39):
             return cur_dist
-        if not part_one and cur_dist > 50:
+        if not first_part and cur_dist > 50:
             return len(seen)
 
         seen.add((cur_x, cur_y))
@@ -49,7 +49,7 @@ def part_one(line_gen):
     return do_worklist(line_gen)
 
 def part_two(line_gen):
-    return do_worklist(line_gen, part_one=False) 
+    return do_worklist(line_gen, first_part=False)
 
 print("A: " + str(part_one(lib.get_input(13))))
 print("B: " + str(part_two(lib.get_input(13))))

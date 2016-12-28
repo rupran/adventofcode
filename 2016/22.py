@@ -2,8 +2,8 @@
 
 import collections
 import itertools
-import lib.common as lib
 import re
+import lib.common as lib
 
 Device = collections.namedtuple('Device', 'x, y, size, used, avail')
 
@@ -15,8 +15,10 @@ def calc_grid_and_viable(line_gen):
     # Name Size Used Avail Use%
     for line in line_gen: # multi line input
         cols = line.split()
-        x, y = map(int, re.match(r"\/dev\/grid\/node-x(\d+)-y(\d+)", cols[0]).groups())
-        cur_dev = Device(x, y, *map(int, (x[:-1] for x in cols[1:-1])))
+        coords = [int(coord) for coord in
+                  re.match(r"\/dev\/grid\/node-x(\d+)-y(\d+)", cols[0]).groups()]
+        x, y = coords[0], coords[1]
+        cur_dev = Device(x, y, *((int(val[:-1]) for val in cols[1:-1])))
         device_grid[(x, y)] = cur_dev
 
     for dev_a in device_grid.values():
@@ -44,7 +46,7 @@ def part_two(line_gen):
             grid_lists[dev.y][dev.x] = "_"
             steps += dev.y
             steps += dev.x  # Move to 0, 0 around the wall
-        elif not dev in itertools.chain.from_iterable(viable):
+        elif dev not in itertools.chain.from_iterable(viable):
             grid_lists[dev.y][dev.x] = "#"
 
     steps += max_x          # Move from 0, 0 to goal and swap empty/goal

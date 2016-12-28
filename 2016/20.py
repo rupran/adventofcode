@@ -3,8 +3,8 @@
 import lib.common as lib
 
 def merge_ranges(line_gen):
-    ranges = sorted((int(x[0]), int(x[1])) for x in 
-                        [l.split("-") for l in line_gen])
+    ranges = sorted((int(x[0]), int(x[1])) for x in
+                    [l.split("-") for l in line_gen])
 
     merged_ranges = [ranges[0]]
     for cur_ind in range(1, len(ranges)):

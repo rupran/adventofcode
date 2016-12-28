@@ -19,7 +19,7 @@ def decrypt(line, factor):
 
 def get_parts(line):
     # Get characters, sector id and checksum from line
-    match_id = re.match("^([a-z-]+)([0-9]+)\[([a-z]+)\]$", line)
+    match_id = re.match(r"^([a-z-]+)([0-9]+)\[([a-z]+)\]$", line)
 
     name = match_id.group(1)
     sector_id = int(match_id.group(2))
@@ -32,7 +32,7 @@ def part_one(line_gen):
 
     for line in line_gen:
         name, sector_id, checksum = get_parts(line)
-        chars_in_name = [x for x in name if not x == '-']
+        chars_in_name = [x for x in name if x != '-']
 
         # Count characters
         counts = collections.defaultdict(int)

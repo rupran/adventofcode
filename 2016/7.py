@@ -12,7 +12,7 @@ def part_one(line_gen):
     in_brackets = re.compile(r".*\[[^\]]*" + abba_string + r".*?\].*")
 
     for line in line_gen: # multi line input
-        # if there is a pattern... 
+        # if there is a pattern...
         if abba_regex.search(line):
             # ... and no pattern inside brackets...
             if not in_brackets.search(line):
@@ -50,7 +50,7 @@ def part_two(line_gen):
             # ... until we found a corresponding reverse
             while not found_one and rev_offset < len(line):
                 # skip characters outside brackets now
-                if not line[rev_offset] == "[":
+                if line[rev_offset] != "[":
                     if not in_brackets:
                         rev_offset += 1
                         continue

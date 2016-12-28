@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import lib.common as lib
 import re
+import lib.common as lib
 
 def parse_pattern(line, index):
     """ Parse a repetition specification in @line at index @index.
@@ -9,7 +9,7 @@ def parse_pattern(line, index):
     of repeated characters and the number of repetitions."""
     n_chars = 1
     n_repetitions = 1
-    
+
     match = re.match(r"^(\((\d+)x(\d+)\)).*", line[index:])
     if match:
         index += len(match.group(1))
@@ -44,7 +44,7 @@ def eval_pattern_length(line, offset, length, task):
             index += n_chars
 
     return total_len
-    
+
 def part_one(line_gen):
     line = next(line_gen)
     return eval_pattern_length(line, 0, len(line), "A")

@@ -7,7 +7,7 @@ def gen_occurrences(line_gen):
     occurrences = collections.defaultdict(dict)
 
     for line in line_gen:
-        for idx in range(len(line)):
+        for idx, _ in enumerate(line):
             if line[idx] not in occurrences[idx]:
                 occurrences[idx][line[idx]] = 1
             else:

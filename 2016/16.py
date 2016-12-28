@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import lib.common as lib
 import re
+import lib.common as lib
 
 def calc_checksum(state, disk_len):
     while len(state) < disk_len:

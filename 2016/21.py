@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 import collections
-import itertools
-import lib.common as lib
 import re
+import lib.common as lib
 
 def rotate(in_deque, in_char):
     char_ind = in_deque.index(in_char)
@@ -94,7 +93,7 @@ def part_two(line_gen, in_deque):
                 in_deque.rotate(-int(match.group(2)))
             continue
         # Most complicated part: rotate 'result' backwards and try forward
-        # rotation with given letter until we find the matching arrangement. 
+        # rotation with given letter until we find the matching arrangement.
         match = re.match(r"rotate based on position of letter (\w+)", line)
         if match:
             shift_index = 0

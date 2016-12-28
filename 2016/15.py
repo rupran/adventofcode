@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import collections
-import lib.common as lib
 import re
+import lib.common as lib
 
 Disc = collections.namedtuple('Disc', 'start, mod')
 
@@ -20,14 +20,15 @@ def simulate(discs):
             return time
         time += 1
 
-def init_discs(line_gen, part_two=False):
+def init_discs(line_gen, second_part=False):
     # disc no -> (start, mod)
     discs = {}
     for line in line_gen:
-        match = re.match(r"Disc #(\d+) has (\d+) positions; at time=0, it is at position (\d+).", line)
+        match = re.match(r"Disc #(\d+) has (\d+) positions; at time=0, it is at position (\d+).",
+                         line)
         discs[int(match.group(1))] = Disc(int(match.group(3)), int(match.group(2)))
 
-    if part_two:
+    if second_part:
         discs[max(discs.keys()) + 1] = Disc(0, 11)
 
     return discs
@@ -36,7 +37,7 @@ def part_one(line_gen):
     return simulate(init_discs(line_gen))
 
 def part_two(line_gen):
-    return simulate(init_discs(line_gen, part_two=True))
+    return simulate(init_discs(line_gen, second_part=True))
 
 print("A: " + str(part_one(lib.get_input(15))))
 print("B: " + str(part_two(lib.get_input(15))))

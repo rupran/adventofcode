@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-import lib.common as lib
-import re
 import collections
+import re
+import lib.common as lib
 
-def print_graph(bots, inputs, outputs):
+outputs = {}
+
+def print_graph(bots, inputs):
     with open("10.dot", "w") as dotfile:
         dotfile.write("digraph ten {\n")
         for output in outputs:
@@ -14,15 +16,15 @@ def print_graph(bots, inputs, outputs):
                 dotfile.write("%d [shape=box, color=blue]\n" % val)
                 dotfile.write("%d -> bot%d\n" % (val, inp))
         for bot in bots:
-            dotfile.write("bot%d -> %s%d [color=green4]\n" % (bot, bots[bot]["low_out"][0], bots[bot]["low_out"][1]))
-            dotfile.write("bot%d -> %s%d [color=firebrick]\n" % (bot, bots[bot]["high_out"][0], bots[bot]["high_out"][1]))
+            dotfile.write("bot%d -> %s%d [color=green4]\n" %
+                          (bot, bots[bot]["low_out"][0], bots[bot]["low_out"][1]))
+            dotfile.write("bot%d -> %s%d [color=firebrick]\n" %
+                          (bot, bots[bot]["high_out"][0], bots[bot]["high_out"][1]))
         dotfile.write("}\n")
 
 def part_one(line_gen):
-    global outputs
     bots = {}
     inputs = collections.defaultdict(list)
-    outputs = {}
 
     for line in line_gen: # multi line input
         match = re.match(r"bot (\d+) gives low to (bot|output) (\d+) and high to (bot|output) (\d+)", line)
@@ -31,7 +33,7 @@ def part_one(line_gen):
             low_out = (match.group(2), int(match.group(3)))
             high_out = (match.group(4), int(match.group(5)))
 
-            if not bot_no in bots:
+            if bot_no not in bots:
                 bots[bot_no] = {"low_out": low_out, "high_out": high_out,
                                 "low_val": None, "high_val": None, "inputs": []}
             else:
@@ -40,11 +42,11 @@ def part_one(line_gen):
                 bots[bot_no]["low_val"] = None
                 bots[bot_no]["high_val"] = None
             continue
-        match = re.match("value (\d+) goes to bot (\d+)", line)
+        match = re.match(r"value (\d+) goes to bot (\d+)", line)
         if match:
             bot_no = int(match.group(2))
             val = int(match.group(1))
-            if not bot_no in bots:
+            if bot_no not in bots:
                 bots[bot_no] = {"inputs": [val]}
             else:
                 bots[bot_no]["inputs"].append(val)
@@ -81,14 +83,13 @@ def part_one(line_gen):
         else:
             outputs[high_out_idx] = max_val
 
-    print_graph(bots, inputs, outputs)
+    print_graph(bots, inputs)
 
     for bot_no in bots:
         if bots[bot_no]["low_val"] == 17 and bots[bot_no]["high_val"] == 61:
             return bot_no
 
 def part_two(line_gen):
-    global outputs
     return outputs[0] * outputs[1] * outputs[2]
 
 print("A: " + str(part_one(lib.get_input(10))))
