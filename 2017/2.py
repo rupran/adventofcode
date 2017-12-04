@@ -21,7 +21,7 @@ def part_two(line_gen):
                 bigger = max(x, y)
                 smaller = min(x, y)
                 if bigger % smaller == 0:
-                    checksum += (bigger/smaller)
+                    checksum += (bigger//smaller)
                     found = True
     return checksum
 
