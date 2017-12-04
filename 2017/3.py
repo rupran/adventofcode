@@ -3,65 +3,52 @@
 import lib.common as lib
 import math
 
-def part_one(line_gen):
-    line = next(line_gen) # one line input
-    target = int(line)
-    sizes = int(math.sqrt(target)) + 1
-    array = [[[0] for i in range(sizes)] for j in range(sizes)]
-    index = [sizes//2, sizes//2]
-    start_index = index[:]
-    cur_shift = 1
-    cur_dir_idx = 0
-    cur_data = 1
+cur_data = 1
+
+def walk_grid(array_size, val_func, target_func, target):
+    array = [[0 for i in range(array_size)] for j in range(array_size)]
+    index = (array_size//2, array_size//2)
+    array[index[0]][index[1]] = 1
+    cur_walk_len = 1
+    direction_idx = 0
     counter = 0
     directions = [(0, 1), (-1, 0), (0, -1), (1, 0)]
     while True:
-        for i in range(cur_shift):
-            array[index[0]][index[1]] = cur_data
-            if cur_data == target:
-                return sum([abs(start_index[0] - index[0]), abs(start_index[1] - index[1])])
-            cur_data += 1
-            index[0] += directions[cur_dir_idx][0]
-            index[1] += directions[cur_dir_idx][1]
+        for _ in range(cur_walk_len):
+            value = val_func(array, index)
+            if target_func(value, target):
+                return (index, value)
+            array[index[0]][index[1]] = value
+            index = tuple(x + y for x, y in zip(index, directions[direction_idx]))
         counter += 1
-        cur_dir_idx = (cur_dir_idx + 1) % 4
-        if counter == 2:
-            cur_shift += 1
-            counter = 0
+        direction_idx = (direction_idx + 1) % 4
+        if counter % 2 == 0:
+            cur_walk_len += 1
 
-def make_sum(data, idx):
+def part_one_value(data, index):
+    global cur_data
+    retval = cur_data
+    cur_data += 1
+    return retval
+
+def part_one(line_gen):
+    target = int(next(line_gen))
+    size = int(math.sqrt(target)) + 1
+    index, _ = walk_grid(size, part_one_value, lambda x, y: x == y, target)
+    return sum(abs(x - y) for x, y in zip((size//2, size//2), index))
+
+def part_two_value(data, idx):
     val = 0
     for y in [-1, 0, 1]:
         for x in [-1, 0, 1]:
-            cur_idx = [idx[0] + y, idx[1] + x]
+            cur_idx = (idx[0] + y, idx[1] + x)
             val += data[cur_idx[0]][cur_idx[1]]
     return val
 
 def part_two(line_gen):
-    line = next(line_gen) # one line input
-    target = int(line)
-    sizes = 11
-    array = [[0 for i in range(sizes)] for j in range(sizes)]
-    index = [sizes//2, sizes//2]
-    start_index = index[:]
-    array[index[0]][index[1]] = 1
-    cur_shift = 1
-    cur_dir_idx = 0
-    counter = 0
-    directions = [(0, 1), (-1, 0), (0, -1), (1, 0)]
-    while True:
-        for i in range(cur_shift):
-            val = make_sum(array, index)
-            array[index[0]][index[1]] = val
-            if val > target:
-                return val
-            index[0] += directions[cur_dir_idx][0]
-            index[1] += directions[cur_dir_idx][1]
-        counter += 1
-        cur_dir_idx = (cur_dir_idx + 1) % 4
-        if counter == 2:
-            cur_shift += 1
-            counter = 0
+    target = int(next(line_gen))
+    _, value = walk_grid(11, part_two_value, lambda x, y: x > y, target)
+    return value
 
 print("A: " + str(part_one(lib.get_input(3))))
 print("B: " + str(part_two(lib.get_input(3))))
