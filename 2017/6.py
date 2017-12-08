@@ -10,14 +10,14 @@ def redistribute(numbers, index):
         numbers[index] += 1
         val -= 1
 
-def calc(line_gen, part_two=False):
+def calc(line_gen, second_part=False):
     numbers = [int(x) for x in next(line_gen).split()]
     seen = {}
     counter = 0
     while True:
         last_state = tuple(numbers)
         if last_state in seen:
-            if part_two:
+            if second_part:
                 return counter - seen[last_state]
             else:
                 return counter

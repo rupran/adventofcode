@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-import lib.common as lib
-
 import collections
 import re
+
+import lib.common as lib
 
 class Node:
     def __init__(self, name, weight, succs, preds):
@@ -23,7 +23,7 @@ def part_one(line_gen):
     successors = collections.defaultdict(list)
     preds = collections.defaultdict(list)
     for line in line_gen:
-        match = re.match("^([a-z]+) \(([0-9]+)\)(?:| -> ([a-z, ]+))$", line)
+        match = re.match(r"^([a-z]+) \(([0-9]+)\)(?:| -> ([a-z, ]+))$", line)
         if match:
             name, weight, succs = match.groups()
             weights[name] = int(weight)

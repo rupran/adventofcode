@@ -11,15 +11,14 @@ class Instr:
         self.target = target
         op = '+' if op == 'inc' else '-'
         self.instruction = 'registers[\'{}\'] {}= {}'.format(target, op, val)
-        self.condition = re.sub(r'^(\w+)', 'registers[\'\g<0>\']', condition)
+        self.condition = re.sub(r'^(\w+)', r"registers['\g<0>']", condition)
 
-def simulate(line_gen, part_two=False):
-    program = []
+def simulate(line_gen, second_part=False):
     registers = collections.defaultdict(int)
     max_val = 0
 
     for line in line_gen:
-        match = re.match("^(\w+) (inc|dec) ([0-9-]+) if (.+)$", line)
+        match = re.match(r"^(\w+) (inc|dec) ([0-9-]+) if (.+)$", line)
         cur = Instr(*match.groups())
 
         if eval(cur.condition):
@@ -27,7 +26,7 @@ def simulate(line_gen, part_two=False):
 
         max_val = max(max_val, registers[cur.target])
 
-    if part_two:
+    if second_part:
         return max_val
     else:
         return max(registers.values())
