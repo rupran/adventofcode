@@ -21,7 +21,7 @@ def find_filename(puzzle_num, folder, prefix):
         infile = sys.argv[1]
     return infile
 
-def get_input(puzzle_num=-1, folder="inputs", prefix="input"):
+def get_input(puzzle_num=-1, folder="inputs", prefix="input", strip=True):
     """ Get the input lines for the puzzle @puzzle_num. Optionally,
         the folder to look in can be specified as @folder (default:
         "inputs") and the prefix for the searched file as @prefix
@@ -29,11 +29,11 @@ def get_input(puzzle_num=-1, folder="inputs", prefix="input"):
         stripped of whitespaces."""
     infile = find_filename(puzzle_num, folder, prefix)
     with open(infile, 'r') as input_file:
-        yield from (line.strip() for line in input_file)
+        yield from (line.strip() if strip else line for line in input_file)
 
-def get_sample_input(puzzle_num=-1, folder="inputs"):
+def get_sample_input(puzzle_num=-1, folder="inputs", strip=True):
     """ Get the sample input for the puzzle @puzzle_num. Optionally,
         the folder to look in can be specified as @folder (default:
         "inputs") and the prefix for the searched file as @prefix
         (default: "input")."""
-    yield from get_input(puzzle_num, folder, prefix="sample")
+    yield from get_input(puzzle_num, folder, prefix="sample", strip=strip)
