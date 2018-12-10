@@ -20,10 +20,12 @@ def get_value(idx, nums, children, meta_offset, cache):
     if idx in cache:
         return cache[idx]
     n_meta = nums[idx + 1]
+    meta_start = idx + meta_offset[idx]
+    meta_end = meta_start + n_meta
     if not children[idx]:
-        return sum(nums[idx + meta_offset[idx]:idx + meta_offset[idx] + n_meta])
+        return sum(nums[meta_start:meta_end])
     s = 0
-    for meta_entry in nums[idx + meta_offset[idx]:idx + meta_offset[idx] + n_meta]:
+    for meta_entry in nums[meta_start:meta_end]:
         if meta_entry == 0:
             continue
         meta_entry -= 1
