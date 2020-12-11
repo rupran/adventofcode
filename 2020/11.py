@@ -8,88 +8,37 @@ def print_field(field):
     for line in field:
         print(''.join(line))
 
-def sum_surrounding(field, y, x, state):
-    result = 0
-    surroundings = []
+def check_field(field, y, x, state, recurse=None):
+    if y <= 0 or y >= len(field) - 1:
+        return 0
+    elif x <= 0 or x >= len(field[0]) - 1:
+        return 0
+    if field[y][x] == state:
+        return 1
+    if field[y][x] != '.':
+        return 0
+    if recurse:
+        return check_field(field, y+recurse[0], x+recurse[1], state, recurse)
+    return 0
+
+def gen_deltas():
+    deltas = []
     for d_y in range(-1, 2):
         for d_x in range(-1, 2):
             if (d_y, d_x) != (0, 0):
-                surroundings.append((d_y, d_x))
+                deltas.append((d_y, d_x))
+    return deltas
 
-    for delta_y, delta_x in surroundings:
-        result += int(field[y-delta_y][x-delta_x] == state)
+def sum_surrounding(field, y, x, state):
+    result = 0
+    for delta_y, delta_x in gen_deltas():
+        result += check_field(field, y + delta_y, x + delta_x, state)
     return result
 
 def sum_visible(field, y, x, state):
     result = 0
-    # left and up
-    cur_y, cur_x = y - 1, x - 1
-    while cur_y > 0 and cur_x > 0:
-        if field[cur_y][cur_x] == state:
-            result += 1
-        if field[cur_y][cur_x] != '.':
-            break
-        cur_x -= 1
-        cur_y -= 1
-    # straight left
-    cur_y, cur_x = y, x - 1
-    while cur_y > 0 and cur_x > 0:
-        if field[cur_y][cur_x] == state:
-            result += 1
-        if field[cur_y][cur_x] != '.':
-            break
-        cur_x -= 1
-    # left and down
-    cur_y, cur_x = y + 1, x - 1
-    while cur_y < len(field) and cur_x > 0:
-        if field[cur_y][cur_x] == state:
-            result += 1
-        if field[cur_y][cur_x] != '.':
-            break
-        cur_x -= 1
-        cur_y += 1
-    # straight up
-    cur_y, cur_x = y - 1, x
-    while cur_y > 0:
-        if field[cur_y][cur_x] == state:
-            result += 1
-        if field[cur_y][cur_x] != '.':
-            break
-        cur_y -= 1
-    # straight down
-    cur_y, cur_x = y + 1, x
-    while cur_y < len(field):
-        if field[cur_y][cur_x] == state:
-            result += 1
-        if field[cur_y][cur_x] != '.':
-            break
-        cur_y += 1
-    # right and up
-    cur_y, cur_x = y - 1, x + 1
-    while cur_y > 0 and cur_x < len(field[0]):
-        if field[cur_y][cur_x] == state:
-            result += 1
-        if field[cur_y][cur_x] != '.':
-            break
-        cur_y -= 1
-        cur_x += 1
-    # straight right
-    cur_y, cur_x = y, x + 1
-    while cur_x < len(field[0]):
-        if field[cur_y][cur_x] == state:
-            result += 1
-        if field[cur_y][cur_x] != '.':
-            break
-        cur_x += 1
-    # right and down
-    cur_y, cur_x = y + 1, x + 1
-    while cur_y < len(field) and cur_x < len(field[0]):
-        if field[cur_y][cur_x] == state:
-            result += 1
-        if field[cur_y][cur_x] != '.':
-            break
-        cur_y += 1
-        cur_x += 1
+    for delta_y, delta_x in gen_deltas():
+        result += check_field(field, y + delta_y, x + delta_x, state, (delta_y, delta_x))
     return result
     
 def simulate(field, sum_function, tolerance):
