@@ -25,56 +25,38 @@ def get_invalid_numbers(numbers, valid_numbers):
             invalid_numbers.append(num)
     return invalid_numbers
 
-def part_one(line_gen):
+def rule_applies(rule, column):
+    # setA - setB returns items which are in setA but not in setB
+    return len(column - rule['valid']) == 0
+
+def solve(line_gen, part=1):
     valid_numbers = set()
     rules = read_rules(line_gen)
     for _, rule in rules.items():
         valid_numbers |= rule['valid']
 
-    result = 0
-    step = 1
-    for line in line_gen: # multi line input
-        if not line:
-            step += 1
-        elif step == 1:
-            pass
-        elif step == 2:
-            if ',' in line:
-                nums = [int(n) for n in line.split(',')]
-                result += sum(get_invalid_numbers(nums, valid_numbers))
-            
-    return result
-
-def rule_applies(rule, column):
-    # setA - setB returns items which are in setA but not in setB
-    return len(column - rule['valid']) == 0
-
-def part_two(line_gen):
-    valid_numbers = set()
-    rules = read_rules(line_gen)
-    for idx, rule in rules.items():
-        valid_numbers |= rule['valid']
-
-    step = 1
-    tickets = []
+    invalid_sum = 0
+    valid_tickets = []
     my_ticket = None
+    step = 1
     for line in line_gen: # multi line input
         if not line:
             step += 1
-        elif step == 1:
-            if ',' not in line:
-                continue
-            my_ticket = ([int(n) for n in line.split(',')])
-            tickets.append(my_ticket)
-        elif step == 2:
-            if ',' not in line:
-                continue
+        elif step == 1 and ',' in line:
+            my_ticket = [int(n) for n in line.split(',')]
+            valid_tickets.append(my_ticket)
+        elif step == 2 and ',' in line:
             nums = [int(n) for n in line.split(',')]
-            if not get_invalid_numbers(nums, valid_numbers):
-                tickets.append(nums)
+            invalid_numbers = get_invalid_numbers(nums, valid_numbers)
+            if not invalid_numbers:
+                valid_tickets.append(nums)
+            invalid_sum += sum(invalid_numbers)
+
+    if part == 1:
+        return invalid_sum
     
     vals_in_cols = collections.defaultdict(set)
-    for ticket in tickets:
+    for ticket in valid_tickets:
         for idx, num in enumerate(ticket):
             vals_in_cols[idx].add(num)
 
@@ -102,6 +84,12 @@ def part_two(line_gen):
             result *= my_ticket[column]
 
     return result
+
+def part_one(line_gen):
+    return solve(line_gen)
+
+def part_two(line_gen):
+    return solve(line_gen, part=2)
 
 print("A: " + str(part_one(lib.get_input(16))))
 print("B: " + str(part_two(lib.get_input(16))))
